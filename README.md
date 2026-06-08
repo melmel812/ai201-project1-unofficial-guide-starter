@@ -91,17 +91,13 @@ Attribution is enforced at two levels. The system prompt instructs the model to 
 
 ## Evaluation Report
 
-<!-- Run your 5 test questions from planning.md through your system and record the results.
-     Be honest — a partially accurate or inaccurate result that you explain well is more
-     valuable than a suspiciously perfect result. -->
-
 | # | Question | Expected answer | System response (summarized) | Retrieval quality | Response accuracy |
 |---|----------|-----------------|------------------------------|-------------------|-------------------|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 | What specific topping should you add to the kalbijjim at Daeho? | Melted cheese | *(run `python query_engine.py` to complete)* | Relevant — top 3 chunks all contain "melted cheese" answer; ranks 4–5 are weak market food matches (distance 0.51–0.54) | *(fill in after running)* |
+| 2 | Which restaurant in San Mateo is called out in the Michelin Guide as a Bib Gourmand selection? | Pausa | *(run `python query_engine.py` to complete)* | Partially relevant — rank 1 is the exact Michelin Pausa entry (distance 0.26); ranks 3–4 are generic Reddit post headers that match on "restaurant" language but contain no award information | *(fill in after running)* |
+| 3 | What unique style of bacon is Sweet Maple known for on its brunch menu? | Millionaire's Bacon | *(run `python query_engine.py` to complete)* | Relevant — rank 1 names Millionaire's Bacon directly (distance 0.26); ranks 2–5 are all Sweet Maple source documents with additional context | *(fill in after running)* |
+| 4 | What are the specific rules for getting fresh malasadas at Takahashi Market? | Available Fridays only; made fresh Friday morning; sell out by noon; no pre-orders | *(run `python query_engine.py` to complete)* | Relevant — rank 1 gives exact Friday-only rule with sell-out time (distance 0.29); all top 5 chunks are from correct sources | *(fill in after running)* |
+| 5 | What specific item should you order at Suruki Market according to neighborhood guides? | Pre-packaged bento boxes, fresh sushi/sashimi, or handmade onigiri | *(run `python query_engine.py` to complete)* | Relevant — all top 5 chunks are from Suruki-related sources; weakest retrieval of the 5 queries (best distance 0.45 vs. 0.26–0.31 for others), likely because "what should I order" is more generic phrasing | *(fill in after running)* |
 
 **Retrieval quality:** Relevant / Partially relevant / Off-target  
 **Response accuracy:** Accurate / Partially accurate / Inaccurate
@@ -122,34 +118,26 @@ Attribution is enforced at two levels. The system prompt instructs the model to 
 
 ## Spec Reflection
 
-<!-- Reflect on how planning.md shaped your implementation.
-     Answer both questions with at least 2–3 sentences each. -->
-
 **One way the spec helped you during implementation:**
 
+The chunking strategy section of `planning.md` was the most directly useful part of the spec during implementation. Because I had already articulated the failure modes — specifically that a 150-character chunk could split "The kalbijjim at Daeho is amazing" from "make sure you get cheese on top" — I had a concrete criterion for evaluating my chunks during the inspection step rather than just eyeballing them. When I ran the pipeline and saw chunk boundaries during the 5-chunk inspection, I was checking against a written standard rather than a vague sense of "does this look okay." The spec also made it easy to justify the 500/100 parameters when someone asked why I chose them — the reasoning was already written down before I wrote a single line of code.
+
 **One way your implementation diverged from the spec, and why:**
+
+The spec's AI Tool Plan assumed I would prompt an AI to generate each script independently from the relevant planning.md section — one prompt for `ingest.py`, one for `vector_store.py`, one for `query_engine.py`. In practice, the implementation was more iterative: rather than handing off a section and accepting the output, I directed the generation in real time, correcting specific decisions as they emerged (for example, the distance cutoff filter on retrieval wasn't in the original spec but was added after observing that the Michelin query was pulling in off-topic Reddit post headers). The spec treated AI-assisted generation as a one-shot handoff; the actual workflow was closer to pair programming where the spec provided direction but the implementation evolved in response to what retrieval testing revealed.
 
 ---
 
 ## AI Usage
 
-<!-- Describe at least 2 specific instances where you used an AI tool during this project.
-     For each: what did you give the AI as input, what did it produce, and what did you
-     change, override, or direct differently?
+**Instance 1 — Generating `ingest.py` from the Chunking Strategy spec**
 
-     "I used Claude to help me code" is not sufficient.
-     "I gave Claude my Chunking Strategy section from planning.md and asked it to implement
-     chunk_text(). It returned a function using a fixed character split. I overrode the
-     chunk size from 500 to 200 because my documents are short reviews, not long guides." -->
+- *What I gave the AI:* The Documents section and Chunking Strategy section of `planning.md`, including the 500-character chunk size, 100-character overlap, and the explicit failure-mode reasoning (too small splits restaurant names from dish details; too large bundles multiple restaurants into one chunk). I also described the three document archetypes: fragmented Reddit prose, structured journalism, and metadata-heavy directories.
+- *What it produced:* A complete `ingest.py` using `langchain_text_splitters.RecursiveCharacterTextSplitter` with the specified parameters, a `clean_text()` function stripping HTML entities and metadata header lines, per-source chunk counts, and a 5-chunk random sample inspection step.
+- *What I changed or overrode:* The initial `clean_text()` function only stripped HTML tags but missed the document header lines (`Source:`, `URL:`, `Collected:`). I directed the AI to add regex patterns to remove those metadata lines specifically, because they were appearing at the start of chunks and adding noise that had nothing to do with food content.
 
-**Instance 1**
+**Instance 2 — Adding the distance cutoff filter to `query_engine.py`**
 
-- *What I gave the AI:*
-- *What it produced:*
-- *What I changed or overrode:*
-
-**Instance 2**
-
-- *What I gave the AI:*
-- *What it produced:*
-- *What I changed or overrode:*
+- *What I gave the AI:* The retrieval test output from Milestone 4 showing that the Michelin Bib Gourmand query was pulling in generic Reddit post headers (`"Let's build the ultimate San Mateo restaurant list"`) at distances of 0.42–0.43, and the Retrieval Approach section of `planning.md` which specified top-k=5 but had no mention of a cutoff.
+- *What it produced:* A `DISTANCE_CUTOFF = 0.55` threshold in the `retrieve()` function that drops any chunk exceeding the cutoff before passing context to the LLM, plus a `temperature=0.2` setting to reduce the model's tendency to interpolate beyond the provided context.
+- *What I changed or overrode:* The AI initially set the cutoff at 0.6. I lowered it to 0.55 after observing that the off-target Reddit headers were clustering between 0.42 and 0.45 — a 0.6 cutoff would have let all of them through. I also directed the AI to make the cutoff a named constant at the top of the file rather than a hardcoded literal in the function, so it's easy to tune when running full evaluation.
