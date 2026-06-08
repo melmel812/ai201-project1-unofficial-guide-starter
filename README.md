@@ -45,7 +45,7 @@ The diverse culinary landscape of San Mateo, CA, emphasizing independent, cultur
 
 **Why these choices fit your documents:** The corpus is a hybrid of highly fragmented conversational prose (Reddit) and dense structured paragraphs (journalism, Michelin). A 500-character chunk isolates individual Reddit recommendations cleanly while preserving enough sentence structure for the editorial articles. The 100-character overlap ensures that restaurant names and their associated details aren't split across chunk boundaries, keeping retrieval context intact.
 
-**Final chunk count:** *(to be filled after ingestion runs)*
+**Final chunk count:** 114 chunks across 10 documents (8–19 chunks per document)
 
 ---
 
@@ -93,24 +93,13 @@ The diverse culinary landscape of San Mateo, CA, emphasizing independent, cultur
 
 ## Failure Case Analysis
 
-<!-- Identify at least one question where retrieval or generation did not work as expected.
-     Write a specific explanation of *why* it failed, tied to a part of the pipeline.
+**Question that failed:** "Which San Mateo restaurant received a Michelin Bib Gourmand award?"
 
-     "The answer was wrong" is not an explanation.
+**What the system returned:** The correct answer (Pausa) appeared at rank 1 with distance 0.34. However, rank 3 returned the Reddit megathread post header — `"Let's build the ultimate San Mateo restaurant list. Drop your favorites by category."` — with a distance of 0.42, and rank 5 returned another generic Reddit post opener about finding a nice dinner. Neither chunk contains information about Michelin awards.
 
-     "The relevant information was split across a chunk boundary, so retrieval returned
-     only half the context — the model didn't have enough to answer correctly" is an explanation.
+**Root cause (tied to a specific pipeline stage):** The failure is in the **embedding/retrieval stage**. Generic "restaurant recommendation" language in the Reddit post headers shares enough semantic space with the query about restaurant awards that `all-MiniLM-L6-v2` assigned them moderate similarity scores. The model embeds both "which restaurant is the best" and "which restaurant got an award" into nearby regions of the vector space because both are restaurant-evaluation queries — the model has no mechanism to distinguish award-specific vocabulary from general recommendation vocabulary at this distance.
 
-     "The embedding model treated the professor's nickname as out-of-vocabulary and returned
-     results from an unrelated review" is an explanation. -->
-
-**Question that failed:**
-
-**What the system returned:**
-
-**Root cause (tied to a specific pipeline stage):**
-
-**What you would change to fix it:**
+**What you would change to fix it:** Two options. First, add a **distance cutoff filter** in the retrieval step: any chunk with distance above 0.40 gets dropped from the context before being passed to the LLM, which would have excluded both off-target Reddit chunks. Second, improve chunk content by **prepending document-type labels** to each chunk at ingestion time (e.g., `[SOURCE: Michelin Guide]` or `[SOURCE: Reddit community thread]`), so the embedding carries the source type as part of its semantic signal rather than relying purely on content similarity.
 
 ---
 
