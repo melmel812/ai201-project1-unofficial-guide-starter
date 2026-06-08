@@ -9,64 +9,51 @@
 
 ## Domain
 
-<!-- What topic or category of knowledge does your system cover?
-     Why is this knowledge valuable, and why is it hard to find through official channels?
-     Example: "Student reviews of CS professors at [university] — useful because official
-     course descriptions don't reflect teaching style, exam difficulty, or workload." -->
+The diverse culinary landscape of San Mateo, CA, emphasizing independent, culturally authentic neighborhood staples, regional fusion hubs, and local logistics (such as lines, wait times, and dietary accessibility).
+
+**Why it's hard to find otherwise:** Traditional search engines surface standard star ratings and sponsored review lists, but fail to capture nuanced community consensus about which spots are chains versus authentic mom-and-pop operations. Aggregate platforms also obscure hyper-local operational realities — like knowing exactly when a bakery sells out of sourdough, or which back-alley food hall stands are cash-only/takeout-exclusive.
 
 ---
 
 ## Document Sources
 
-<!-- List every source you collected documents from.
-     Be specific: include URLs, subreddit names, forum thread titles, or file names.
-     Aim for variety — sources that together cover different subtopics or perspectives. -->
-
 | # | Source | Type | URL or file path |
 |---|--------|------|-----------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
-| 6 | | | |
-| 7 | | | |
-| 8 | | | |
-| 9 | | | |
-| 10 | | | |
+| 1 | Reddit r/SanMateo — Best Non-Chain Restaurant Dinners | Community forum | https://www.reddit.com/r/SanMateo/comments/1kusnwt/best_non_chain_restaurant_in_san_mateo_i_wanna/ |
+| 2 | Reddit r/SanMateo — Ultimate Restaurant Recommendation Megathread | Community forum | https://www.reddit.com/r/SanMateo/comments/1ad3cl9/best_restaurants/ |
+| 3 | Reddit r/SanMateo — Favorite Neighborhood Spots (Any Cuisine) | Community forum | https://www.reddit.com/r/SanMateo/comments/1lyrvba/favorite_neighborhood_spots_any_cuisine/ |
+| 4 | San Mateo Daily Journal — Local Food & Lifestyle Features | Regional press | https://www.smdailyjournal.com/lifestyle/food/ |
+| 5 | San Mateo Daily Journal — Interactive Food Story Map | Regional press / map | https://sm-dj.com/foodmap/ |
+| 6 | The MICHELIN Guide — San Mateo Dining Selections | Expert curation | https://guide.michelin.com/us/en/california/san-mateo/restaurants |
+| 7 | Yelp — Top-Rated Late Night Eats in San Mateo | Niche directory | https://www.yelp.com/search?find_desc=Late+Night+Food&find_loc=San+Mateo%2C+CA (`docs/yelp_late_night.md`) |
+| 8 | HappyCow — Vegan and Vegetarian San Mateo | Dietary directory | https://www.happycow.net/north_america/usa/california/san_mateo/ (`docs/happycow_vegetarian.md`) |
+| 9 | Sweet Maple San Mateo — Brunch Operations & Menu | Restaurant site | https://www.sweetmaplesf.com/ |
+| 10 | Suruki Market & Takahashi Market — Prepared Foods/Deli Guides | Market guides | https://www.yelp.com/search?find_desc=Japanese+Grocery&find_loc=San+Mateo%2C+CA (`docs/japanese_hawaiian_markets.md`) |
+
+**Source format notes:**
+- Reddit threads: highly fragmented casual prose; single-sentence recommendations buried in long personal anecdotes.
+- Daily Journal & Michelin: structured paragraph-dense blocks with context, history, and address data woven together.
+- Yelp/HappyCow directories: structured metadata (price points, hours, tags) alongside short repetitive user reviews.
 
 ---
 
 ## Chunking Strategy
 
-<!-- Describe your chunking approach with enough specificity that someone else could reproduce it.
-     Include:
-     - Chunk size (characters or tokens) and why that size fits your documents
-     - Overlap size and why (or why not) you used overlap
-     - Any preprocessing you did before chunking (e.g., stripping HTML, removing headers)
-     - What your final chunk count was across all documents -->
+**Chunk size:** 500 characters
 
-**Chunk size:**
+**Overlap:** 100 characters
 
-**Overlap:**
+**Why these choices fit your documents:** The corpus is a hybrid of highly fragmented conversational prose (Reddit) and dense structured paragraphs (journalism, Michelin). A 500-character chunk isolates individual Reddit recommendations cleanly while preserving enough sentence structure for the editorial articles. The 100-character overlap ensures that restaurant names and their associated details aren't split across chunk boundaries, keeping retrieval context intact.
 
-**Why these choices fit your documents:**
-
-**Final chunk count:**
+**Final chunk count:** *(to be filled after ingestion runs)*
 
 ---
 
 ## Embedding Model
 
-<!-- Name the embedding model you used and explain your choice.
-     Then answer: if you were deploying this system for real users and cost wasn't a constraint,
-     what tradeoffs would you weigh in choosing a different model?
-     Consider: context length limits, multilingual support, accuracy on domain-specific text,
-     latency, and local vs. API-hosted. -->
+**Model used:** `all-MiniLM-L6-v2` via the `sentence-transformers` library
 
-**Model used:**
-
-**Production tradeoff reflection:**
+**Production tradeoff reflection:** This model provides an optimal balance between low latency and semantic accuracy for short-to-medium text spans. At scale with no cost constraints, tradeoffs to consider: shifting to `text-embedding-3-large` for larger context windows; using models fine-tuned on colloquial text to better parse slang-heavy restaurant reviews; adding multilingual model support given San Mateo's diverse communities; and weighing API-hosted vs. local inference latency.
 
 ---
 
