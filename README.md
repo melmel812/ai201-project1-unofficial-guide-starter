@@ -392,3 +392,9 @@ python query_engine.py --no-llm --filter-source michelin_san_mateo.md "What rest
 ```
 
 **Practical use case:** A user who wants only expert-curated recommendations (not community opinion) can filter to `michelin_san_mateo.md`. Conversely, filtering to `reddit_best_dinners.md` or `reddit_restaurant_megathread.md` isolates community voice. The filter is applied at the ChromaDB query level — it does not post-filter, so the full `n_results` budget is used within the filtered scope.
+
+---
+
+## Demo Video
+
+[Watch the demo on YouTube](https://youtu.be/vCF9LZtS3MA)
