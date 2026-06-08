@@ -59,16 +59,33 @@ The diverse culinary landscape of San Mateo, CA, emphasizing independent, cultur
 
 ## Grounded Generation
 
-<!-- Explain how your system enforces grounding — how does it prevent the LLM from answering
-     beyond the retrieved documents?
-     Describe both your system prompt (what instruction you gave the model) and any structural
-     choices (e.g., how you formatted the context, whether you filtered low-relevance chunks).
-     Do not just say "I told it to use the documents" — show the actual instruction or explain
-     the mechanism. -->
-
 **System prompt grounding instruction:**
 
+The system prompt explicitly prohibits the model from using training knowledge. The exact instruction injected before every query:
+
+```
+You are a local food guide assistant for San Mateo, CA.
+
+Answer the user's question using ONLY the information provided in the DOCUMENTS section below.
+Do not use any knowledge from your training data. Do not guess or infer details not present in the documents.
+
+If the documents do not contain enough information to answer the question fully, say:
+"I don't have enough information in my sources to answer that."
+
+After your answer, list the source document(s) you drew from, like this:
+Sources: [filename1, filename2]
+
+DOCUMENTS:
+{retrieved chunks injected here}
+```
+
+Two additional structural mechanisms reinforce grounding:
+1. **Distance cutoff filter** (`DISTANCE_CUTOFF = 0.55`): chunks with a cosine distance above 0.55 are dropped before being passed to the LLM, so loosely-related content never reaches the prompt.
+2. **Low temperature** (`temperature=0.2`): reduces the model's tendency to interpolate or generate beyond the provided context.
+
 **How source attribution is surfaced in the response:**
+
+Attribution is enforced at two levels. The system prompt instructs the model to append `Sources: [filename1, filename2]` at the end of every answer. Additionally, `query_engine.py` programmatically extracts the `source` field from every retrieved chunk and returns it as a separate `sources` list — so even if the LLM omits the citation, the Gradio interface always displays which documents were retrieved in a dedicated "Retrieved from" field.
 
 ---
 
