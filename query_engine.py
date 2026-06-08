@@ -55,14 +55,23 @@ def load_retriever():
     return collection, model
 
 
-def retrieve(query: str, collection, model, k: int = TOP_K) -> list[dict]:
-    """Return top-k chunks filtered by distance cutoff."""
+def retrieve(query: str, collection, model, k: int = TOP_K, source_filter: str = None) -> list[dict]:
+    """
+    Return top-k chunks filtered by distance cutoff.
+    source_filter: if provided, restrict results to chunks from that source filename.
+    """
     embedding = model.encode([query])
-    results = collection.query(
+
+    # Stretch: metadata filtering — pass ChromaDB where clause when a source is specified
+    query_kwargs = dict(
         query_embeddings=embedding.tolist(),
         n_results=k,
         include=["documents", "metadatas", "distances"],
     )
+    if source_filter:
+        query_kwargs["where"] = {"source": {"$eq": source_filter}}
+
+    results = collection.query(**query_kwargs)
     hits = []
     for doc, meta, dist in zip(
         results["documents"][0],
@@ -148,6 +157,13 @@ def main():
         action="store_true",
         help="Skip LLM generation and print retrieved chunks only (no API key needed)",
     )
+    parser.add_argument(
+        "--filter-source",
+        type=str,
+        default=None,
+        metavar="FILENAME",
+        help="Restrict retrieval to a single source file, e.g. michelin_san_mateo.md",
+    )
     args = parser.parse_args()
 
     query = args.query or input("Ask a question: ").strip()
@@ -159,13 +175,18 @@ def main():
 
     collection, model = load_retriever()
 
+    source_filter = args.filter_source
+    if source_filter:
+        print(f"[metadata filter: source = {source_filter}]")
+
     if args.no_llm:
-        result = retrieval_only(query, collection, model)
+        hits = retrieve(query, collection, model, source_filter=source_filter)
+        sources = sorted(set(h["source"] for h in hits))
         print(f"\n--- Retrieved chunks (top {TOP_K}, cutoff={DISTANCE_CUTOFF}) ---")
-        for i, hit in enumerate(result["hits"], 1):
+        for i, hit in enumerate(hits, 1):
             print(f"\n[{i}] {hit['source']}  distance={hit['distance']}")
             print(hit["text"])
-        print(f"\nSources: {result['sources']}")
+        print(f"\nSources: {sources}")
     else:
         result = ask(query, collection, model)
         print(f"\n--- Answer ---\n{result['answer']}")

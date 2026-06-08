@@ -1,0 +1,110 @@
+{
+  "What topping should you add to the kalbijjim at Daeho?": {
+    "A_500_100": [
+      {
+        "text": "Comment by u/SanMateoNative:\nHonestly Daeho Kalbijjim is the move if you want something that will blow your mind. It's a Korean braised short rib dish and the portion is massive. Pro tip that nobody tells you: add the cheese topping. I know it sounds weird but melted cheese over kalbijjim is a game changer. The line can be long on weekends so go before they open or expect to wait 30-45 minutes.",
+        "source": "reddit_best_dinners.md",
+        "distance": 0.3111
+      },
+      {
+        "text": "KOREAN:\n- Daeho Kalbijjim and Beef Soup (48 E 4th Ave): The braised short rib is the signature dish. Order the large for groups. Always get the melted cheese add-on. Cash and card both accepted. Parking is street only, so arrive early. Wait times on weekends can hit 45 minutes but there is no call-ahead option.\n- Jang Su Jang: Good tofu soup and banchan spread. More low-key than Daeho. Great for a quieter weeknight meal.",
+        "source": "reddit_restaurant_megathread.md",
+        "distance": 0.3573
+      },
+      {
+        "text": "Story: Daeho is a San Francisco import that has become a San Mateo institution. Their signature dish -- kalbijjim, or braised beef short rib -- arrives at the table still simmering in an iron pot. The restaurant is famous locally not just for the dish but for the community recommendation to add melted cheese as a topping, a combination that has become almost ritualistic among regulars. The restaurant does not take reservations and operates on a first-come, first-served basis",
+        "source": "smdj_story_map_data.md",
+        "distance": 0.4033
+      }
+    ],
+    "B_300_50": [
+      {
+        "text": "Honestly Daeho Kalbijjim is the move if you want something that will blow your mind. It's a Korean braised short rib dish and the portion is massive. Pro tip that nobody tells you: add the cheese topping. I know it sounds weird but melted cheese over kalbijjim is a game changer",
+        "source": "reddit_best_dinners.md",
+        "distance": 0.3156
+      },
+      {
+        "text": "- Daeho Kalbijjim and Beef Soup (48 E 4th Ave): The braised short rib is the signature dish. Order the large for groups. Always get the melted cheese add-on. Cash and card both accepted. Parking is street only, so arrive early",
+        "source": "reddit_restaurant_megathread.md",
+        "distance": 0.3751
+      },
+      {
+        "text": "Story: Daeho is a San Francisco import that has become a San Mateo institution. Their signature dish -- kalbijjim, or braised beef short rib -- arrives at the table still simmering in an iron pot",
+        "source": "smdj_story_map_data.md",
+        "distance": 0.5069
+      }
+    ]
+  },
+  "Where can I get food after 10 PM in San Mateo?": {
+    "A_500_100": [
+      {
+        "text": "LATE NIGHT DINING IN SAN MATEO: A STRUCTURAL ANALYSIS\n\nSan Mateo presents a notable challenge for diners seeking food after 10 PM. Unlike San Francisco or larger urban centers, the downtown restaurant core largely shuts down between 9:30 and 10:30 PM on weekdays, and rarely extends past midnight even on weekends. The following entries represent the most viable options for late-night dining in the city and immediate surroundings.",
+        "source": "yelp_late_night.md",
+        "distance": 0.2877
+      },
+      {
+        "text": "- The best options past 10 PM are izakayas (limited, maybe 2-3 reliable ones) and the 85C bakery\n- For actual meals past midnight, options largely require driving toward South San Francisco or Millbrae",
+        "source": "yelp_late_night.md",
+        "distance": 0.3001
+      },
+      {
+        "text": "Comment by u/NightOwlEater:\nFor late night (past 10pm) San Mateo is honestly rough. Kaizen stops seating around 10pm on weekdays. Your best bets are: a 24-hour diner option if you go toward South San Francisco, some of the izakayas near downtown that run to midnight on weekends, or just head to the 85C bakery which runs late. Downtown ramen places tend to close earlier than you'd hope.",
+        "source": "reddit_neighborhood_spots.md",
+        "distance": 0.3025
+      }
+    ],
+    "B_300_50": [
+      {
+        "text": "For late night (past 10pm) San Mateo is honestly rough. Kaizen stops seating around 10pm on weekdays. Your best bets are: a 24-hour diner option if you go toward South San Francisco, some of the izakayas near downtown that run to midnight on weekends, or just head to the 85C bakery which runs late",
+        "source": "reddit_neighborhood_spots.md",
+        "distance": 0.2934
+      },
+      {
+        "text": "San Mateo presents a notable challenge for diners seeking food after 10 PM. Unlike San Francisco or larger urban centers, the downtown restaurant core largely shuts down between 9:30 and 10:30 PM on weekdays, and rarely extends past midnight even on weekends",
+        "source": "yelp_late_night.md",
+        "distance": 0.3034
+      },
+      {
+        "text": "Post: Best non-chain restaurant in San Mateo? I wanna treat myself to a nice dinner this weekend. Nothing corporate, just real food made by people who care.",
+        "source": "reddit_best_dinners.md",
+        "distance": 0.3056
+      }
+    ]
+  },
+  "What should I order at Suruki Market?": {
+    "A_500_100": [
+      {
+        "text": "PREPARED FOODS COUNTER - WHAT TO ORDER\nThe deli counter at Suruki is the main event. Key items:\n- Sushi and sashimi trays: Made fresh daily. The fish quality is consistently described as excellent and the pricing undercuts standalone sushi restaurants significantly.\n- Bento boxes: Pre-packaged lunch bento with rice, protein (teriyaki salmon, chicken katsu, or similar), and pickled sides. These are popular with local office workers and sell out most days before 1 PM.",
+        "source": "japanese_hawaiian_markets.md",
+        "distance": 0.3686
+      },
+      {
+        "text": "JAPANESE:\n- Suruki Supermarket (93 West 25th Ave): The deli counter at Suruki is a local institution. Fresh sushi and sashimi made daily, bento boxes that sell out by early afternoon, and some of the best market-made onigiri in the Bay Area. Their prepared foods section beats most standalone sushi restaurants for quality-to-price ratio.",
+        "source": "reddit_restaurant_megathread.md",
+        "distance": 0.4077
+      },
+      {
+        "text": "Neighborhood: Central San Mateo\nCategory: Japanese Grocery / Prepared Foods\nStory: Suruki is a family-owned Japanese supermarket that has served the San Mateo community for decades. The prepared foods deli counter is considered the market's crown jewel: fresh sushi and sashimi made daily, bento boxes that sell out before early afternoon, and handmade onigiri. Quality is consistently described as surpassing standalone restaurants at a fraction of the price.",
+        "source": "smdj_story_map_data.md",
+        "distance": 0.4111
+      }
+    ],
+    "B_300_50": [
+      {
+        "text": "- Suruki Supermarket (93 West 25th Ave): The deli counter at Suruki is a local institution. Fresh sushi and sashimi made daily, bento boxes that sell out by early afternoon, and some of the best market-made onigiri in the Bay Area",
+        "source": "reddit_restaurant_megathread.md",
+        "distance": 0.3713
+      },
+      {
+        "text": "Story: Suruki is a family-owned Japanese supermarket that has served the San Mateo community for decades. The prepared foods deli counter is considered the market's crown jewel: fresh sushi and sashimi made daily, bento boxes that sell out before early afternoon, and handmade onigiri",
+        "source": "smdj_story_map_data.md",
+        "distance": 0.3866
+      },
+      {
+        "text": "PREPARED FOODS COUNTER - WHAT TO ORDER\nThe deli counter at Suruki is the main event. Key items:\n- Sushi and sashimi trays: Made fresh daily. The fish quality is consistently described as excellent and the pricing undercuts standalone sushi restaurants significantly.",
+        "source": "japanese_hawaiian_markets.md",
+        "distance": 0.3905
+      }
+    ]
+  }
+}
